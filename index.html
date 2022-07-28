@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8">
+    <title>Get data from API</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <style>
+        body {
+            background-color: #141414;
+            text-align: center;
+            color: #fff;
+        }
+
+        #status {
+            color: #ff0000;
+            padding-bottom: 30px;
+        }
+
+        img {height:800px}
+        button {cursor:pointer}
+    </style>
+</head>
+<body>
+
+    <p>
+        <input placeholder="URL" id="url" size="160">
+        <input placeholder="Data" id="data" size="14">
+        <button onclick="reload()">Reload</button>
+    </p>
+
+    <div id="status"></div>
+
+    <img id="image" alt="Unknown">
+
+    <script>
+        async function reload() {
+            const url = document.getElementById('url').value;
+            const status = document.getElementById('status');
+            if (!url) return status.innerHTML = 'URL input is empty.';
+
+            const data = document.getElementById('data').value;
+
+            try {
+                const res = await axios.get(url);
+                const img = document.getElementById('image');
+
+				const final = res.data[data];
+                if (!final) return status.innerHTML = JSON.stringify(res.data);
+
+                img.src = final;
+
+                console.log(final);
+            } catch (err) {
+                status.innerHTML = err.message;
+                console.error(err);
+            }
+        }
+    </script>
+</body>
+</html>
